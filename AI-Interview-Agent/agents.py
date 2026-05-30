@@ -1,33 +1,99 @@
-class InterviewAgent:
-    def __init__(self, name):
-        self.name = name
+def evaluate_interview(candidate_profile, answers):
 
-    def greet_candidate(self):
-        return f"Hello, I'm {self.name}. Let's start the interview."
+    total_questions = len(answers)
 
-    def ask_question(self, question):
-        return f"{self.name}: {question}"
+    answered = sum(
+        1 for item in answers
+        if item["answer"].strip()
+    )
 
-    def process_response(self, response):
-        # Logic to process the candidate's response
-        return f"Processing response: {response}"
+    score = (
+        answered / total_questions
+    ) * 100
 
+    if score >= 90:
 
-class TechnicalAgent(InterviewAgent):
-    def ask_technical_question(self):
-        technical_questions = [
-            "What is your experience with Python?",
-            "Can you explain the concept of OOP?",
-            "How do you handle errors in your code?"
-        ]
-        return self.ask_question(technical_questions[0])  # Example of asking the first technical question
+        decision = "SELECT"
+        rating = "A+"
 
+    elif score >= 80:
 
-class HRAgent(InterviewAgent):
-    def ask_hr_question(self):
-        hr_questions = [
-            "Tell me about yourself.",
-            "What are your strengths and weaknesses?",
-            "Where do you see yourself in five years?"
-        ]
-        return self.ask_question(hr_questions[0])  # Example of asking the first HR question
+        decision = "SELECT"
+        rating = "A"
+
+    elif score >= 70:
+
+        decision = "CONSIDER"
+        rating = "B+"
+
+    elif score >= 60:
+
+        decision = "CONSIDER"
+        rating = "B"
+
+    else:
+
+        decision = "REJECT"
+        rating = "C"
+
+    report = f"""
+# Candidate Evaluation Report
+
+## Candidate Information
+
+Name:
+{candidate_profile['name']}
+
+Role:
+{candidate_profile['role']}
+
+Experience:
+{candidate_profile['experience']}
+
+## Performance Metrics
+
+Completion Score:
+{score:.2f}%
+
+Candidate Rating:
+{rating}
+
+Hiring Recommendation:
+{decision}
+
+## Strengths
+
+• Completed the interview successfully
+
+• Demonstrated participation
+
+• Attempted all questions
+
+## Areas for Improvement
+
+• Technical depth
+
+• Practical implementation
+
+• Communication clarity
+
+## Learning Roadmap
+
+Week 1:
+Core Fundamentals
+
+Week 2:
+Problem Solving Practice
+
+Week 3:
+Project Implementation
+
+Week 4:
+Mock Interviews
+
+## Final Summary
+
+Candidate has completed the assessment successfully.
+"""
+
+    return report
