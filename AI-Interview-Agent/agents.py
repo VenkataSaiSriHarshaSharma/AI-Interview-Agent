@@ -1,99 +1,59 @@
-def evaluate_interview(candidate_profile, answers):
+import google.generativeai as genai
 
-    total_questions = len(answers)
 
-    answered = sum(
-        1 for item in answers
-        if item["answer"].strip()
-    )
+def evaluate_interview(candidate_profile, answers, model):
 
-    score = (
-        answered / total_questions
-    ) * 100
+    prompt = f"""
+You are a Senior Technical Interviewer and Hiring Manager.
 
-    if score >= 90:
+Candidate Information:
+{candidate_profile}
 
-        decision = "SELECT"
-        rating = "A+"
+Interview Responses:
+{answers}
 
-    elif score >= 80:
+Analyze the interview thoroughly.
 
-        decision = "SELECT"
-        rating = "A"
+Generate the report in the following format:
 
-    elif score >= 70:
-
-        decision = "CONSIDER"
-        rating = "B+"
-
-    elif score >= 60:
-
-        decision = "CONSIDER"
-        rating = "B"
-
-    else:
-
-        decision = "REJECT"
-        rating = "C"
-
-    report = f"""
 # Candidate Evaluation Report
 
-## Candidate Information
+## Technical Score
+Provide a score out of 100.
 
-Name:
-{candidate_profile['name']}
+## Communication Score
+Provide a score out of 100.
 
-Role:
-{candidate_profile['role']}
+## Problem Solving Score
+Provide a score out of 100.
 
-Experience:
-{candidate_profile['experience']}
+## Candidate Rating
+Assign one:
+A+
+A
+B+
+B
+C
 
-## Performance Metrics
-
-Completion Score:
-{score:.2f}%
-
-Candidate Rating:
-{rating}
-
-Hiring Recommendation:
-{decision}
+## Hiring Recommendation
+Choose one:
+SELECT
+CONSIDER
+REJECT
 
 ## Strengths
-
-• Completed the interview successfully
-
-• Demonstrated participation
-
-• Attempted all questions
+Provide 3-5 strengths.
 
 ## Areas for Improvement
-
-• Technical depth
-
-• Practical implementation
-
-• Communication clarity
+Provide 3-5 improvement areas.
 
 ## Learning Roadmap
-
-Week 1:
-Core Fundamentals
-
-Week 2:
-Problem Solving Practice
-
-Week 3:
-Project Implementation
-
-Week 4:
-Mock Interviews
+Provide a personalized learning plan.
 
 ## Final Summary
-
-Candidate has completed the assessment successfully.
+Provide overall assessment.
 """
 
-    return report
+    response = model.generate_content(prompt)
+
+    return response.text

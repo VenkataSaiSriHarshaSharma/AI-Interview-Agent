@@ -1,34 +1,60 @@
 import streamlit as st
+import google.generativeai as genai
+import os
+
+from dotenv import load_dotenv
 
 from question_bank import generate_random_questions
 from agents import evaluate_interview
 
-# --------------------------------
+# =====================================
+# GEMINI SETUP
+# =====================================
+
+load_dotenv()
+
+api_key = os.getenv("GEMINI_API_KEY")
+
+genai.configure(api_key=api_key)
+
+model = genai.GenerativeModel(
+    "gemini-2.5-flash"
+)
+
+# =====================================
 # PAGE CONFIG
-# --------------------------------
+# =====================================
 
 st.set_page_config(
-    page_title="AI Interview Agent",
+    page_title="AI Recruitment Platform",
     page_icon="🤖",
     layout="wide"
 )
 
-# --------------------------------
+# =====================================
 # SIDEBAR
-# --------------------------------
+# =====================================
 
 with st.sidebar:
 
-    st.title("🤖 AI Interview Platform")
+    st.title("🤖 AI Recruitment Platform")
 
-    st.success("Question Engine")
-    st.success("Interview Engine")
-    st.success("Memory Engine")
-    st.success("Evaluation Engine")
+    st.success("✅ Question Engine")
+    st.success("✅ Interview Engine")
+    st.success("✅ Memory Engine")
+    st.success("✅ AI Evaluation Engine")
 
-# --------------------------------
+    st.markdown("---")
+
+    st.info("""
+Professional Candidate Assessment System
+
+Version 2.0
+""")
+
+# =====================================
 # SESSION STATE
-# --------------------------------
+# =====================================
 
 if "interview_started" not in st.session_state:
     st.session_state.interview_started = False
@@ -51,19 +77,19 @@ if "candidate_profile" not in st.session_state:
 if "evaluation_report" not in st.session_state:
     st.session_state.evaluation_report = None
 
-# --------------------------------
+# =====================================
 # HEADER
-# --------------------------------
+# =====================================
 
-st.title("🤖 AI Interview Agent")
+st.title("🤖 AI Recruitment & Assessment Platform")
 
-st.subheader(
-    "Professional Candidate Assessment Platform"
+st.caption(
+    "AI-Powered Candidate Screening System"
 )
 
-# --------------------------------
-# CANDIDATE DETAILS
-# --------------------------------
+# =====================================
+# CANDIDATE FORM
+# =====================================
 
 candidate_name = st.text_input(
     "Candidate Name"
@@ -72,23 +98,21 @@ candidate_name = st.text_input(
 role = st.selectbox(
     "Select Role",
     [
-        
-    "Java Developer",
-    "Python Developer",
-    "AI Engineer",
-    "Data Analyst",
-    "Full Stack Developer",
-    "Cyber Security Analyst",
-    "Cloud Engineer",
-    "DevOps Engineer",
-    "Backend Developer",
-    "Frontend Developer",
-    "Software Engineer",
-    "Data Engineer",
-    "Business Analyst",
-    "QA Engineer",
-    "Mobile App Developer"
-
+        "Java Developer",
+        "Python Developer",
+        "AI Engineer",
+        "Data Analyst",
+        "Full Stack Developer",
+        "Cyber Security Analyst",
+        "Cloud Engineer",
+        "DevOps Engineer",
+        "Backend Developer",
+        "Frontend Developer",
+        "Software Engineer",
+        "Data Engineer",
+        "Business Analyst",
+        "QA Engineer",
+        "Mobile App Developer"
     ]
 )
 
@@ -107,9 +131,9 @@ question_count = st.selectbox(
     [5, 10, 15]
 )
 
-# --------------------------------
+# =====================================
 # START INTERVIEW
-# --------------------------------
+# =====================================
 
 if (
     not st.session_state.interview_started
@@ -124,10 +148,12 @@ if (
             )
             st.stop()
 
-        generated_questions = generate_random_questions(
+        questions = generate_random_questions(
             role,
             question_count
         )
+
+        st.session_state.questions = questions
 
         st.session_state.candidate_profile = {
             "name": candidate_name,
@@ -136,21 +162,17 @@ if (
             "question_count": question_count
         }
 
-        st.session_state.questions = generated_questions
-
-        st.session_state.interview_started = True
+        st.session_state.answers = []
 
         st.session_state.question_index = 0
 
-        st.session_state.answers = []
-
-        st.session_state.evaluation_report = None
+        st.session_state.interview_started = True
 
         st.rerun()
 
-# --------------------------------
-# INTERVIEW
-# --------------------------------
+# =====================================
+# INTERVIEW SECTION
+# =====================================
 
 if st.session_state.interview_started:
 
@@ -166,17 +188,17 @@ if st.session_state.interview_started:
 
     st.progress(progress)
 
-    current_question = (
+    question = (
         st.session_state.questions[
             current_index
         ]
     )
 
     st.subheader(
-        f"Question {current_index + 1}"
+        f"Question {current_index + 1} of {total_questions}"
     )
 
-    st.write(current_question)
+    st.write(question)
 
     answer = st.text_area(
         "Your Answer"
@@ -192,7 +214,7 @@ if st.session_state.interview_started:
 
         st.session_state.answers.append(
             {
-                "question": current_question,
+                "question": question,
                 "answer": answer
             }
         )
@@ -210,9 +232,9 @@ if st.session_state.interview_started:
 
         st.rerun()
 
-# --------------------------------
-# REPORT
-# --------------------------------
+# =====================================
+# REPORT SECTION
+# =====================================
 
 if st.session_state.interview_completed:
 
@@ -221,60 +243,59 @@ if st.session_state.interview_completed:
     )
 
     st.header(
-        "📋 Candidate Summary"
+        "📋 Candidate Dashboard"
     )
+
     col1, col2, col3 = st.columns(3)
 
-with col1:
-
-    st.metric(
+    col1.metric(
         "Role",
         st.session_state.candidate_profile["role"]
     )
 
-with col2:
-
-    st.metric(
+    col2.metric(
         "Experience",
         st.session_state.candidate_profile["experience"]
     )
 
-with col3:
-
-    st.metric(
+    col3.metric(
         "Questions",
         st.session_state.candidate_profile["question_count"]
     )
 
-    st.json(
-        st.session_state.candidate_profile
-    )
+    st.markdown("---")
 
     if st.button(
-        "Generate Evaluation Report"
+        "🤖 Generate AI Evaluation"
     ):
 
-        report = evaluate_interview(
-            st.session_state.candidate_profile,
-            st.session_state.answers
-        )
+        with st.spinner(
+            "AI Agent Evaluating Candidate..."
+        ):
 
-        st.session_state.evaluation_report = report
+            report = evaluate_interview(
+                st.session_state.candidate_profile,
+                st.session_state.answers,
+                model
+            )
+
+            st.session_state.evaluation_report = report
 
     if st.session_state.evaluation_report:
 
-        st.download_button(
-    label="📥 Download Report",
-
-    data=st.session_state.evaluation_report,
-
-    file_name="Interview_Report.txt",
-
-    mime="text/plain"
-)
+        st.header(
+            "📊 AI Evaluation Report"
+        )
 
         st.markdown(
             st.session_state.evaluation_report
+        )
+
+        st.download_button(
+            label="📥 Download Report",
+            data=st.session_state.evaluation_report,
+            file_name="AI_Interview_Report.txt",
+            mime="text/plain"
         )
 
     if st.button(
@@ -284,3 +305,13 @@ with col3:
         st.session_state.clear()
 
         st.rerun()
+
+# =====================================
+# FOOTER
+# =====================================
+
+st.markdown("---")
+
+st.caption(
+    "Developed by Venkata Sai Sri Harsha Sharma"
+)
