@@ -1,22 +1,25 @@
-from agents import AIInterviewAgent
-from questions import QuestionManager
+import streamlit as st
+import google.generativeai as genai
+import os
 
-def main():
-    # Initialize the AI interview agent
-    agent = AIInterviewAgent()
-    
-    # Initialize the question manager
-    question_manager = QuestionManager()
-    
-    # Start the interview process
-    print("Welcome to the AI Interview Agent!")
-    questions = question_manager.get_questions()
-    
-    for question in questions:
-        response = agent.ask_question(question)
-        agent.process_response(response)
-    
-    print("Thank you for participating in the interview!")
+from dotenv import load_dotenv
 
-if __name__ == "__main__":
-    main()
+load_dotenv()
+
+genai.configure(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
+
+model = genai.GenerativeModel(
+    "gemini-2.5-flash"
+)
+
+st.title("AI Interview Agent")
+
+if st.button("Test Gemini"):
+
+    response = model.generate_content(
+        "Say Hello Harsha"
+    )
+
+    st.success(response.text)
