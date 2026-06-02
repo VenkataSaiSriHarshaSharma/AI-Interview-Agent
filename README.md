@@ -1,38 +1,95 @@
-# AI Interview Agent
+# AI Multi-Agent Recruitment System
 
 ## Overview
-The AI Interview Agent is a project designed to facilitate automated interviews using AI agents. It manages the flow of the interview process, interacts with candidates, and processes their responses.
+
+The AI Multi-Agent Recruitment System is an AI-powered hiring platform that automates candidate assessment using Google Gemini and Streamlit.
+
+The system performs:
+
+* Resume Screening
+* Skill Evaluation
+* Technical Interview Assessment
+* Communication Analysis
+* Hiring Recommendation
+* Candidate Performance Reporting
+
+## Technologies Used
+
+* Python
+* Streamlit
+* Google Gemini API
+* Google Generative AI SDK
+* Prompt Engineering
+* PyMuPDF
+* Python-Docx
+* Git
+* GitHub
+
+## Features
+
+### Resume Screening Agent
+
+* Resume parsing
+* Skill extraction
+* Resume match analysis
+
+### Interview Agent
+
+* Dynamic technical questions
+* Multiple job roles supported
+* Randomized question generation
+
+### Evaluation Agent
+
+* Technical score generation
+* Communication assessment
+* Problem-solving evaluation
+
+### Hiring Recommendation Agent
+
+* SELECT / CONSIDER / REJECT decision
+* Candidate strengths and weaknesses
+* Learning roadmap generation
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Create a `.env` file:
+
+```env
+GEMINI_API_KEY=YOUR_API_KEY
+```
+
+Run the application:
+
+```bash
+streamlit run app.py
+```
 
 ## Project Structure
-- `app.py`: Main entry point for the application, managing the overall interview process.
-- `agents.py`: Contains the implementation of AI agents that interact with candidates.
-- `questions.py`: Manages the questions used in interviews, including retrieval and selection logic.
-- `requirements.txt`: Lists the dependencies required for the project.
-- `.env`: Configuration file for environment variables, including sensitive information.
 
-## Setup Instructions
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
-2. Navigate to the project directory:
-   ```
-   cd AI-Interview-Agent
-   ```
-3. Install the required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-4. Configure environment variables in the `.env` file as needed.
-
-## Usage
-To start the application, run:
-```
-python app.py
+```text
+AI-Interview-Agent
+│
+├── app.py
+├── agents.py
+├── question_bank.py
+├── requirements.txt
+├── README.md
+└── .env
 ```
 
-## Contributing
-Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
+## Future Enhancements
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+* Resume Upload Support
+* Skill Gap Analysis
+* PDF Report Generation
+* Recruiter Dashboard
+* Cloud Deployment
+
+## Author
+
+Venkata Sai Sri Harsha Sharma
