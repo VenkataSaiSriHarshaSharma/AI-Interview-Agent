@@ -1,8 +1,8 @@
-export default function Reports() {
+export default function Settings() {
   return (
     <div className="p-8 text-white">
       <h1 className="text-4xl font-bold">
-        Recruitment Reports
+        Settings
       </h1>
     </div>
   );
