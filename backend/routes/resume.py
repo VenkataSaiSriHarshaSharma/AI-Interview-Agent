@@ -14,9 +14,7 @@ from agents import (
     screen_resume
 )
 
-from backend.services.gemini_service import (
-    model
-)
+model = None
 
 router = APIRouter()
 

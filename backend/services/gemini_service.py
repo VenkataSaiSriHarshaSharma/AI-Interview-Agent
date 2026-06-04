@@ -1,19 +1,35 @@
+from openai import OpenAI
 import os
-
-import google.generativeai as genai
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-api_key = os.getenv(
-    "GEMINI_API_KEY"
+client = OpenAI(
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1"
 )
 
-genai.configure(
-    api_key=api_key
-)
+def generate_content(prompt):
 
-model = genai.GenerativeModel(
-    "gemini-2.5-flash"
-)
+    response = client.chat.completions.create(
+
+        model="nvidia/nemotron-3-ultra-550b-a55b:free",
+
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+
+        temperature=0.7,
+        max_tokens=4000
+
+    )
+
+    return response.choices[0].message.content
+
+
+# compatibility for old imports
+model = None

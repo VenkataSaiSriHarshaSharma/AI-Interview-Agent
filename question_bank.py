@@ -276,14 +276,26 @@ QUESTION_BANK = {
 
 def generate_random_questions(role, count):
 
-    available_questions = QUESTION_BANK.get(role, [])
+    role = role.strip().lower()
 
-    if not available_questions:
+    matched_questions = []
+
+    for key, value in QUESTION_BANK.items():
+
+        if key.lower() == role:
+
+            matched_questions = value
+            break
+
+    if not matched_questions:
         return []
 
-    count = min(count, len(available_questions))
+    count = min(
+        count,
+        len(matched_questions)
+    )
 
     return random.sample(
-        available_questions,
+        matched_questions,
         count
     )

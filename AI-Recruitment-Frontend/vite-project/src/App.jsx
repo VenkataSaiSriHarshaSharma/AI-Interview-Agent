@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
-
+import Evaluation from "./pages/Evaluation";
 import Dashboard from "./pages/Dashboard";
 import ResumeScreening from "./pages/ResumeScreening";
 
@@ -34,7 +34,7 @@ function App() {
           />
 
           <Route path="/interview" element={<Interview />} />
-
+          <Route path="/evaluation"element={<Evaluation />}/>
           <Route path="/reports" element={<Reports />} />
 
           <Route path="/settings" element={<Settings />} />

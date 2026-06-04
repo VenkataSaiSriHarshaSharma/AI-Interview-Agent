@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   FileText,
   MessageSquare,
+  ClipboardCheck,
   BarChart3,
   Settings,
 } from "lucide-react";
@@ -26,6 +27,11 @@ export default function Sidebar() {
       name: "Interview",
       icon: <MessageSquare size={20} />,
       path: "/interview",
+    },
+    {
+      name: "Evaluation",
+      icon: <ClipboardCheck size={20} />,
+      path: "/evaluation",
     },
     {
       name: "Reports",

@@ -1,5 +1,4 @@
 import streamlit as st
-import google.generativeai as genai
 import os
 
 from dotenv import load_dotenv
@@ -21,7 +20,7 @@ from resume_parser import (
 
 load_dotenv()
 
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("GROK_API_KEY")
 
 genai.configure(api_key=api_key)
 

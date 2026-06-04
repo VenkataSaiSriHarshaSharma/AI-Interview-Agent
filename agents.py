@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from backend.services.gemini_service import generate_content
 
 
 # =====================================================
@@ -8,7 +8,7 @@ import google.generativeai as genai
 def screen_resume(
     resume_text,
     target_role,
-    model
+    model=None
 ):
 
     prompt = f"""
@@ -42,11 +42,14 @@ Format professionally.
 """
 
     try:
-        response = model.generate_content(prompt)
-        return response.text
+
+        return generate_content(prompt)
 
     except Exception as e:
-        return f"Resume Screening Error:\n{str(e)}"
+
+        return (
+            f"Resume Screening Error:\n{str(e)}"
+        )
 
 
 # =====================================================
@@ -55,7 +58,7 @@ Format professionally.
 
 def evaluate_communication(
     answers,
-    model
+    model=None
 ):
 
     prompt = f"""
@@ -83,11 +86,14 @@ Generate a professional report.
 """
 
     try:
-        response = model.generate_content(prompt)
-        return response.text
+
+        return generate_content(prompt)
 
     except Exception as e:
-        return f"Communication Analysis Error:\n{str(e)}"
+
+        return (
+            f"Communication Analysis Error:\n{str(e)}"
+        )
 
 
 # =====================================================
@@ -97,7 +103,7 @@ Generate a professional report.
 def evaluate_skills(
     resume_text,
     answers,
-    model
+    model=None
 ):
 
     prompt = f"""
@@ -126,11 +132,14 @@ Generate:
 """
 
     try:
-        response = model.generate_content(prompt)
-        return response.text
+
+        return generate_content(prompt)
 
     except Exception as e:
-        return f"Skill Evaluation Error:\n{str(e)}"
+
+        return (
+            f"Skill Evaluation Error:\n{str(e)}"
+        )
 
 
 # =====================================================
@@ -140,7 +149,7 @@ Generate:
 def evaluate_interview(
     candidate_profile,
     answers,
-    model
+    model=None
 ):
 
     prompt = f"""
@@ -186,11 +195,14 @@ REJECT
 """
 
     try:
-        response = model.generate_content(prompt)
-        return response.text
+
+        return generate_content(prompt)
 
     except Exception as e:
-        return f"Interview Evaluation Error:\n{str(e)}"
+
+        return (
+            f"Interview Evaluation Error:\n{str(e)}"
+        )
 
 
 # =====================================================
@@ -202,7 +214,7 @@ def hiring_recommendation(
     communication_report,
     skill_report,
     interview_report,
-    model
+    model=None
 ):
 
     prompt = f"""
@@ -235,11 +247,14 @@ Generate:
 """
 
     try:
-        response = model.generate_content(prompt)
-        return response.text
+
+        return generate_content(prompt)
 
     except Exception as e:
-        return f"Hiring Recommendation Error:\n{str(e)}"
+
+        return (
+            f"Hiring Recommendation Error:\n{str(e)}"
+        )
 
 
 # =====================================================
@@ -252,7 +267,7 @@ def generate_final_report(
     skill_report,
     interview_report,
     hiring_report,
-    model
+    model=None
 ):
 
     prompt = f"""
@@ -295,8 +310,11 @@ Format professionally.
 """
 
     try:
-        response = model.generate_content(prompt)
-        return response.text
+
+        return generate_content(prompt)
 
     except Exception as e:
-        return f"Final Report Error:\n{str(e)}"
+
+        return (
+            f"Final Report Error:\n{str(e)}"
+        )

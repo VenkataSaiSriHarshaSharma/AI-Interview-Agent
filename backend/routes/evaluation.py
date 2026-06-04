@@ -5,9 +5,7 @@ from agents import (
     evaluate_interview
 )
 
-from backend.services.gemini_service import (
-    model
-)
+model = None
 
 router = APIRouter()
 
