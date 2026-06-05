@@ -33,13 +33,27 @@ export default function Interview() {
 
       console.log(response.data);
 
-      setQuestions(response.data.questions);
+      setQuestions(
+  response.data.questions
+);
 
-      setAnswers(
-        new Array(
-          response.data.questions.length
-        ).fill("")
-      );
+localStorage.setItem(
+  "candidateRole",
+  role
+);
+
+localStorage.setItem(
+  "interviewQuestions",
+  JSON.stringify(
+    response.data.questions
+  )
+);
+
+setAnswers(
+  new Array(
+    response.data.questions.length
+  ).fill("")
+);
     } catch (error) {
       console.error(error);
       alert("Failed to generate questions");
@@ -82,11 +96,69 @@ export default function Interview() {
       );
 
       localStorage.setItem(
-        "evaluationReport",
-        response.data.report
-      );
+  "evaluationReport",
+  response.data.report
+);
 
-      window.location.href = "/evaluation";
+const report =
+  response.data.report;
+
+const scores =
+  report.match(
+    /\*\*(\d+)\/100\*\*/g
+  ) || [];
+
+const technical =
+  scores[0]
+    ?.match(/\d+/)?.[0]
+    || "0";
+
+const communication =
+  scores[1]
+    ?.match(/\d+/)?.[0]
+    || "0";
+
+const problem =
+  scores[2]
+    ?.match(/\d+/)?.[0]
+    || "0";
+
+localStorage.setItem(
+  "technicalScore",
+  technical
+);
+
+localStorage.setItem(
+  "communicationScore",
+  communication
+);
+
+localStorage.setItem(
+  "problemScore",
+  problem
+);
+
+const recommendation =
+  report.includes("SELECT")
+    ? "SELECT"
+    : report.includes("CONSIDER")
+    ? "CONSIDER"
+    : report.includes("REJECT")
+    ? "REJECT"
+    : "PENDING";
+
+localStorage.setItem(
+  "recommendation",
+  recommendation
+);
+
+localStorage.setItem(
+  "lastInterviewDate",
+  new Date().toLocaleString()
+);
+
+window.location.href =
+  "/evaluation";
     } catch (error) {
       console.error(error);
       alert("Evaluation failed");

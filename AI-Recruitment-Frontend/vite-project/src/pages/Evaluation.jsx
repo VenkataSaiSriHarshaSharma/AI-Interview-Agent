@@ -4,18 +4,79 @@ export default function Evaluation() {
 
   const [report, setReport] = useState("");
 
-  useEffect(() => {
+useEffect(() => {
 
-    const savedReport =
-      localStorage.getItem(
-        "evaluationReport"
-      );
+  const savedReport =
+    localStorage.getItem(
+      "evaluationReport"
+    );
 
-    if (savedReport) {
-      setReport(savedReport);
+  if (savedReport) {
+
+    setReport(savedReport);
+
+    const numbers =
+      savedReport.match(
+        /(\d+)\/100/g
+      ) || [];
+
+    const technical =
+      numbers[0]
+        ?.replace("/100", "")
+        || "0";
+
+    const communication =
+      numbers[1]
+        ?.replace("/100", "")
+        || "0";
+
+    const problem =
+      numbers[2]
+        ?.replace("/100", "")
+        || "0";
+
+    localStorage.setItem(
+      "technicalScore",
+      technical
+    );
+
+    localStorage.setItem(
+      "communicationScore",
+      communication
+    );
+
+    localStorage.setItem(
+      "problemScore",
+      problem
+    );
+
+    let decision = "REJECT";
+
+    const avg =
+      (
+        Number(technical) +
+        Number(communication) +
+        Number(problem)
+      ) / 3;
+
+    if (avg >= 75) {
+
+      decision = "SELECT";
+
+    } else if (avg >= 50) {
+
+      decision = "CONSIDER";
+
     }
 
-  }, []);
+    localStorage.setItem(
+      "recommendation",
+      decision
+    );
+
+  }
+
+}, []);
 
   return (
 
@@ -33,6 +94,54 @@ export default function Evaluation() {
         </p>
 
       </div>
+
+      {/* Score Cards */}
+
+      <div className="grid grid-cols-3 gap-6 mb-8">
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+          <h3 className="text-slate-400">
+            Technical Score
+          </h3>
+
+          <p className="text-4xl font-bold text-cyan-400 mt-2">
+            {
+  report
+    ? localStorage.getItem("technicalScore")
+    : "--"
+}
+          </p>
+
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+          <h3 className="text-slate-400">
+            Communication Score
+          </h3>
+
+          <p className="text-4xl font-bold text-green-400 mt-2">
+            {localStorage.getItem("communicationScore") || "--"}
+          </p>
+
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+
+          <h3 className="text-slate-400">
+            Problem Solving Score
+          </h3>
+
+          <p className="text-4xl font-bold text-yellow-400 mt-2">
+            {localStorage.getItem("problemScore") || "--"}
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* Report */}
 
       <div
         className="
