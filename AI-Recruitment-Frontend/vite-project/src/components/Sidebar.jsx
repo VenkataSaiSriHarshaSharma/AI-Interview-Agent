@@ -38,11 +38,7 @@ export default function Sidebar() {
       icon: <BarChart3 size={20} />,
       path: "/reports",
     },
-    {
-      name: "Settings",
-      icon: <Settings size={20} />,
-      path: "/settings",
-    },
+    
   ];
 
   return (

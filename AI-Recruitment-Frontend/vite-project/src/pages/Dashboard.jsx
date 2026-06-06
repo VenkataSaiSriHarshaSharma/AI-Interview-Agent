@@ -17,29 +17,28 @@ import {
 
 const analyticsData = [
   {
-    month: "Jan",
-    resumes: 12,
-    interviews: 8,
+    metric: "Resume Score",
+    value: Number(
+      localStorage.getItem(
+        "resumeScore"
+      ) || 0
+    ),
   },
   {
-    month: "Feb",
-    resumes: 18,
-    interviews: 14,
+    metric: "Technical Score",
+    value: Number(
+      localStorage.getItem(
+        "technicalScore"
+      ) || 0
+    ),
   },
   {
-    month: "Mar",
-    resumes: 25,
-    interviews: 20,
-  },
-  {
-    month: "Apr",
-    resumes: 32,
-    interviews: 28,
-  },
-  {
-    month: "May",
-    resumes: 38,
-    interviews: 34,
+    metric: "Questions",
+    value: JSON.parse(
+      localStorage.getItem(
+        "interviewQuestions"
+      ) || "[]"
+    ).length,
   },
 ];
 
@@ -171,71 +170,92 @@ const reports =
 
         <div className="bg-slate-900 rounded-3xl p-6 border border-slate-800">
 
-          <h2 className="text-2xl font-bold mb-6">
-            Resume Analysis Trend
-          </h2>
+  <h2 className="text-2xl font-bold mb-6">
+    Recruitment Analytics
+  </h2>
 
-          <ResponsiveContainer
-            width="100%"
-            height={300}
-          >
+  <ResponsiveContainer
+    width="100%"
+    height={350}
+  >
 
-            <LineChart data={analyticsData}>
+    <LineChart data={analyticsData}>
 
-              <CartesianGrid strokeDasharray="3 3" />
+      <CartesianGrid strokeDasharray="3 3" />
 
-              <XAxis dataKey="month" />
+      <XAxis dataKey="metric" />
 
-              <YAxis />
+      <YAxis />
 
-              <Tooltip />
+      <Tooltip />
 
-              <Line
-                type="monotone"
-                dataKey="resumes"
-                stroke="#06b6d4"
-                strokeWidth={3}
-              />
+      <Line
+        type="monotone"
+        dataKey="value"
+        stroke="#06b6d4"
+        strokeWidth={3}
+      />
 
-            </LineChart>
+    </LineChart>
 
-          </ResponsiveContainer>
+  </ResponsiveContainer>
 
-        </div>
+</div>
+<div className="bg-slate-900 rounded-3xl p-6 border border-slate-800">
 
-        <div className="bg-slate-900 rounded-3xl p-6 border border-slate-800">
+  <h2 className="text-2xl font-bold mb-6">
+    Candidate Summary
+  </h2>
 
-          <h2 className="text-2xl font-bold mb-6">
-            Interview Trend
-          </h2>
+  <div className="space-y-5">
 
-          <ResponsiveContainer
-            width="100%"
-            height={300}
-          >
+    <div className="bg-slate-950 p-4 rounded-xl">
+      <p className="text-slate-400">
+        Resume Score
+      </p>
 
-            <LineChart data={analyticsData}>
+      <p className="text-3xl font-bold text-cyan-400">
+        {localStorage.getItem("resumeScore") || 0}%
+      </p>
+    </div>
 
-              <CartesianGrid strokeDasharray="3 3" />
+    <div className="bg-slate-950 p-4 rounded-xl">
+      <p className="text-slate-400">
+        Technical Score
+      </p>
 
-              <XAxis dataKey="month" />
+      <p className="text-3xl font-bold text-yellow-400">
+        {localStorage.getItem("technicalScore") || 0}
+      </p>
+    </div>
 
-              <YAxis />
+    <div className="bg-slate-950 p-4 rounded-xl">
+      <p className="text-slate-400">
+        Hiring Decision
+      </p>
 
-              <Tooltip />
+      <p className="text-3xl font-bold text-green-400">
+        {localStorage.getItem("resumeDecision") || "PENDING"}
+      </p>
+    </div>
 
-              <Line
-                type="monotone"
-                dataKey="interviews"
-                stroke="#22c55e"
-                strokeWidth={3}
-              />
+    <div className="bg-slate-950 p-4 rounded-xl">
+      <p className="text-slate-400">
+        Questions Asked
+      </p>
 
-            </LineChart>
+      <p className="text-3xl font-bold text-purple-400">
+        {
+          JSON.parse(
+            localStorage.getItem("interviewQuestions") || "[]"
+          ).length
+        }
+      </p>
+    </div>
 
-          </ResponsiveContainer>
+  </div>
 
-        </div>
+</div>
 
       </div>
 

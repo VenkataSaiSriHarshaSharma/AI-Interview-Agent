@@ -11,7 +11,6 @@ import ResumeScreening from "./pages/ResumeScreening";
 
 import Interview from "./pages/Interview";
 import Reports from "./pages/Reports";
-import Settings from "./pages/Settings";
 
 function App() {
 
@@ -36,8 +35,6 @@ function App() {
           <Route path="/interview" element={<Interview />} />
           <Route path="/evaluation"element={<Evaluation />}/>
           <Route path="/reports" element={<Reports />} />
-
-          <Route path="/settings" element={<Settings />} />
 
         </Routes>
 
