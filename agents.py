@@ -8,7 +8,7 @@ from backend.services.gemini_service import generate_content
 def screen_resume(
     resume_text,
     target_role,
-    model=None
+    model
 ):
 
     prompt = f"""
@@ -20,33 +20,35 @@ Target Role:
 Resume Content:
 {resume_text}
 
-Generate a professional report containing:
+Analyze the resume and provide ONLY:
 
-1. Candidate Summary
+1. Candidate Summary (2-3 lines)
 
-2. Technical Skills
+2. Key Technical Skills
 
-3. Soft Skills
+3. Strengths
 
-4. Projects Analysis
+4. Missing Skills
 
-5. Strengths
+5. Resume Match Score (0-100)
 
-6. Missing Skills
+6. Final Recommendation
+   (SHORTLISTED / CONSIDER / REJECT)
 
-7. Resume Match Score (0-100)
-
-8. Improvement Suggestions
+Rules:
+- Keep the report concise.
+- Maximum 400 words.
+- Use bullet points where appropriate.
+- Resume Match Score must be a single numeric value.
+- Final Recommendation must appear at the end.
 
 Format professionally.
 """
 
     try:
-
         return generate_content(prompt)
 
     except Exception as e:
-
         return (
             f"Resume Screening Error:\n{str(e)}"
         )
