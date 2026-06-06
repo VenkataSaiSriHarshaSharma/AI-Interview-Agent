@@ -4,75 +4,96 @@ export default function Evaluation() {
 
   const [report, setReport] = useState("");
 
-useEffect(() => {
+  const [technicalScore, setTechnicalScore] =
+    useState("--");
 
-  const savedReport =
-    localStorage.getItem(
-      "evaluationReport"
-    );
+  const [communicationScore, setCommunicationScore] =
+    useState("--");
+
+  const [problemScore, setProblemScore] =
+    useState("--");
+
+  useEffect(() => {
+
+    const savedReport =
+      localStorage.getItem(
+        "evaluationReport"
+      );
+      console.log("REPORT:");
+
     console.log(savedReport);
 
-  if (savedReport) {
+    if (savedReport) {
 
-    setReport(savedReport);
+      setReport(savedReport);
 
-    const technical =
-  savedReport.match(
-    /Technical Score.*?\*\*(\d+)\*\*/is
-  )?.[1] || "0";
+      const allNumbers =
+  savedReport.match(/\d+/g) || [];
+
+
+const technical =
+  allNumbers[2] || "0";
 
 const communication =
-  savedReport.match(
-    /Communication Score.*?\*\*(\d+)\*\*/is
-  )?.[1] || "0";
+  allNumbers[5] || "0";
 
 const problem =
-  savedReport.match(
-    /Problem Solving Score.*?\*\*(\d+)\*\*/is
-  )?.[1] || "0";
+  allNumbers[8] || "0";
 
-    localStorage.setItem(
-      "technicalScore",
-      technical
-    );
+      setTechnicalScore(
+        technical
+      );
 
-    localStorage.setItem(
-      "communicationScore",
-      communication
-    );
+      setCommunicationScore(
+        communication
+      );
 
-    localStorage.setItem(
-      "problemScore",
-      problem
-    );
+      setProblemScore(
+        problem
+      );
 
-    let decision = "REJECT";
+      localStorage.setItem(
+        "technicalScore",
+        technical
+      );
 
-    const avg =
-      (
-        Number(technical) +
-        Number(communication) +
-        Number(problem)
-      ) / 3;
+      localStorage.setItem(
+        "communicationScore",
+        communication
+      );
 
-    if (avg >= 75) {
+      localStorage.setItem(
+        "problemScore",
+        problem
+      );
 
-      decision = "SELECT";
+      let decision = "REJECT";
 
-    } else if (avg >= 50) {
+      const avg =
+        (
+          Number(technical) +
+          Number(communication) +
+          Number(problem)
+        ) / 3;
 
-      decision = "CONSIDER";
+      if (avg >= 75) {
+
+        decision = "SELECT";
+
+      } else if (avg >= 50) {
+
+        decision = "CONSIDER";
+
+      }
+
+      localStorage.setItem(
+        "recommendation",
+        decision
+      );
 
     }
 
-    localStorage.setItem(
-      "recommendation",
-      decision
-    );
-
-  }
-
-}, []);
+  }, []);
 
   return (
 
@@ -95,42 +116,62 @@ const problem =
 
       <div className="grid grid-cols-3 gap-6 mb-8">
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div
+          className="
+            bg-slate-900
+            border
+            border-slate-800
+            rounded-2xl
+            p-6
+          "
+        >
 
           <h3 className="text-slate-400">
             Technical Score
           </h3>
 
           <p className="text-4xl font-bold text-cyan-400 mt-2">
-            {
-  report
-    ? localStorage.getItem("technicalScore")
-    : "--"
-}
+            {technicalScore}
           </p>
 
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div
+          className="
+            bg-slate-900
+            border
+            border-slate-800
+            rounded-2xl
+            p-6
+          "
+        >
 
           <h3 className="text-slate-400">
             Communication Score
           </h3>
 
           <p className="text-4xl font-bold text-green-400 mt-2">
-            {localStorage.getItem("communicationScore") || "--"}
+            {communicationScore}
           </p>
 
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div
+          className="
+            bg-slate-900
+            border
+            border-slate-800
+            rounded-2xl
+            p-6
+          "
+        >
 
           <h3 className="text-slate-400">
             Problem Solving Score
           </h3>
 
           <p className="text-4xl font-bold text-yellow-400 mt-2">
-            {localStorage.getItem("problemScore") || "--"}
+            {problemScore}
           </p>
 
         </div>
@@ -182,4 +223,5 @@ const problem =
     </div>
 
   );
+
 }
