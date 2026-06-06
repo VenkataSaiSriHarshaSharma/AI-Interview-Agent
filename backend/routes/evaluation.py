@@ -4,16 +4,14 @@ from pydantic import BaseModel
 from agents import evaluate_interview
 from backend.database import reports_collection
 
-model = None
-
 router = APIRouter()
+
+model = None
 
 
 class EvaluationRequest(BaseModel):
     candidate_profile: dict
     answers: list
-
-
 @router.post("/evaluate")
 def evaluate_candidate(
     data: EvaluationRequest
@@ -34,25 +32,23 @@ def evaluate_candidate(
             report
     }
 
-    reports_collection.insert_one(
-        report_data
-    )
+    try:
+
+        reports_collection.insert_one(
+            report_data
+        )
+
+        print(
+            "MongoDB Save Success"
+        )
+
+    except Exception as e:
+
+        print(
+            "MongoDB Save Failed:",
+            str(e)
+        )
 
     return {
         "report": report
     }
-
-@router.get("/reports")
-def get_reports():
-
-    reports = []
-
-    for item in reports_collection.find():
-
-        item["_id"] = str(
-            item["_id"]
-        )
-
-        reports.append(item)
-
-    return reports

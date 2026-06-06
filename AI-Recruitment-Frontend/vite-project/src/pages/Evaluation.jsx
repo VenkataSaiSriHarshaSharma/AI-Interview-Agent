@@ -10,30 +10,26 @@ useEffect(() => {
     localStorage.getItem(
       "evaluationReport"
     );
+    console.log(savedReport);
 
   if (savedReport) {
 
     setReport(savedReport);
 
-    const numbers =
-      savedReport.match(
-        /(\d+)\/100/g
-      ) || [];
-
     const technical =
-      numbers[0]
-        ?.replace("/100", "")
-        || "0";
+  savedReport.match(
+    /Technical Score.*?\*\*(\d+)\*\*/is
+  )?.[1] || "0";
 
-    const communication =
-      numbers[1]
-        ?.replace("/100", "")
-        || "0";
+const communication =
+  savedReport.match(
+    /Communication Score.*?\*\*(\d+)\*\*/is
+  )?.[1] || "0";
 
-    const problem =
-      numbers[2]
-        ?.replace("/100", "")
-        || "0";
+const problem =
+  savedReport.match(
+    /Problem Solving Score.*?\*\*(\d+)\*\*/is
+  )?.[1] || "0";
 
     localStorage.setItem(
       "technicalScore",
